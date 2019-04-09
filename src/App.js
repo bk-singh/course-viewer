@@ -6,6 +6,8 @@ import {
   NavLink
 } from "react-router-dom";
 
+import Courses from "./Courses";
+
 export default function App() {
   return (
     <Router>
@@ -46,10 +48,6 @@ function About() {
       </p>
     </div>
   );
-}
-
-function Courses() {
-  return <h2>Courses</h2>;
 }
 
 function NoMatch() {
