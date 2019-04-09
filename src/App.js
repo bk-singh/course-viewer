@@ -1,28 +1,79 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  NavLink
+} from "react-router-dom";
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+export default function App() {
+  return (
+    <Router>
+      <div>
+        <Header />
+
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route exact path="/home" component={Home} />
+          <Route path="/courses" component={Courses} />
+          <Route exact path="/about" component={About} />
+          <Route component={NoMatch} />
+        </Switch>
       </div>
-    );
-  }
+    </Router>
+  );
 }
 
-export default App;
+function Home() {
+  return (
+    <div class="bg-light p-4">
+      <h2>Pluralsight Administration</h2>
+      <p>React, Redux, React Router for ultra-responsive web apps.</p>
+      <NavLink to="/About">
+        <button class="btn btn-primary">Learn more</button>
+      </NavLink>
+    </div>
+  );
+}
+
+function About() {
+  return (
+    <div>
+      <h2>About</h2>
+      <p>
+        This app uses React, Redux, React Router and many other helpful
+        libraries
+      </p>
+    </div>
+  );
+}
+
+function Courses() {
+  return <h2>Courses</h2>;
+}
+
+function NoMatch() {
+  return <h2>Ooops! Page not found.</h2>;
+}
+
+function Header() {
+  return (
+    <ul class="nav">
+      <li class="nav-item">
+        <NavLink to="/home" activeClassName="selected-nav-item">
+          Home
+        </NavLink>
+      </li>
+      <li class="nav-item">
+        <NavLink to="/courses" activeClassName="selected-nav-item">
+          Courses
+        </NavLink>
+      </li>
+      <li class="nav-item">
+        <NavLink to="/about" activeClassName="selected-nav-item">
+          About
+        </NavLink>
+      </li>
+    </ul>
+  );
+}
