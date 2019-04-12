@@ -1,11 +1,11 @@
 import React from "react";
+import { connect } from "react-redux";
 
-export default class Courses extends React.Component {
+class Courses extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      courses: [],
-      newCourse: null,
+      newCourse: "",
       newId: 1
     };
     this.handleChange = this.handleChange.bind(this);
@@ -21,23 +21,18 @@ export default class Courses extends React.Component {
   }
 
   handleSubmit(event) {
-    let courses = this.state.courses;
-    courses = courses.concat([
-      {
-        id: this.state.newId,
-        name: this.state.newCourse
-      }
-    ]);
+    this.props.addCourse({id: this.state.newId, name: this.state.newCourse})
     this.setState({
-      courses,
-      newCourse: '',
+      newCourse: "",
       newId: this.state.newId + 1
     });
     event.preventDefault();
   }
-
+  componentDidMount() {
+    console.log(this.props.courses);
+  }
   render() {
-    const courses = this.state.courses;
+    const courses = this.props.courses;
     return (
       <div>
         <h2>Courses</h2>
@@ -58,3 +53,21 @@ export default class Courses extends React.Component {
     );
   }
 }
+
+function mapStateToProps(state) {
+  console.log(state);
+  return {
+    courses: state.courses,
+  };
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    addCourse: (course) => dispatch(Object.assign({ type: 'ADD_COURSE' }, course)),
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Courses);
