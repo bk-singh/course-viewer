@@ -6,7 +6,7 @@ function course(state = [], action) {
       newState = newState.concat([
         {
           id: action.id,
-          name: action.name
+          title: action.title
         }
       ]);
       return newState;

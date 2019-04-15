@@ -1,7 +1,7 @@
-export function addCourse(name, id) {
+export function addCourse(title, id) {
   return {
     type: "ADD_COURSE",
-    name,
+    title,
     id
   };
 }

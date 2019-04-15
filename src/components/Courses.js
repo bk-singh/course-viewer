@@ -13,7 +13,16 @@ class Courses extends React.Component {
   }
 
   renderCourse(course) {
-    return <li key={course.id}>{course.name}</li>;
+    return (
+      <tr key={course.id}>
+        <td>
+          <button className="btn btn-light">Watch</button>
+        </td>
+        <td>{course.title}</td>
+        <td>{course.author}</td>
+        <td>{course.category}</td>
+      </tr>
+    );
   }
 
   handleChange(event) {
@@ -21,7 +30,7 @@ class Courses extends React.Component {
   }
 
   handleSubmit(event) {
-    this.props.addCourse({id: this.state.newId, name: this.state.newCourse})
+    this.props.addCourse({ id: this.state.newId, title: this.state.newCourse });
     this.setState({
       newCourse: "",
       newId: this.state.newId + 1
@@ -36,11 +45,21 @@ class Courses extends React.Component {
     return (
       <div>
         <h2>Courses</h2>
-        <ul>
-          {courses.map((course, i) => {
-            return this.renderCourse(course);
-          })}
-        </ul>
+        <table className="table">
+          <thead>
+            <tr>
+              <th />
+              <th>Title</th>
+              <th>Author</th>
+              <th>Category</th>
+            </tr>
+          </thead>
+          <tbody>
+            {courses.map((course, i) => {
+              return this.renderCourse(course);
+            })}
+          </tbody>
+        </table>
         <form onSubmit={this.handleSubmit}>
           <input
             type="text"
@@ -57,15 +76,15 @@ class Courses extends React.Component {
 function mapStateToProps(state) {
   console.log(state);
   return {
-    courses: state.courses,
+    courses: state.courses
   };
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    addCourse: (course) => dispatch(Object.assign({ type: 'ADD_COURSE' }, course)),
-  }
-}
+    addCourse: course => dispatch(Object.assign({ type: "ADD_COURSE" }, course))
+  };
+};
 
 export default connect(
   mapStateToProps,
