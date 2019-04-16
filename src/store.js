@@ -1,10 +1,10 @@
 import { createStore, applyMiddleware } from "redux";
 
 import rootReducer from './reducers/index';
-import trunk from 'redux-thunk';
-import { getCourses } from './api/courseApi';
+import logger from 'redux-logger';
+import thunk from 'redux-thunk';
 
-const defaultState = { 
+const defaultState = {
   courses: [
     {
       id: 1,
@@ -84,8 +84,74 @@ const defaultState = {
   ]
 };
 
-// console.log(getCourses());
+const store = createStore(
+  rootReducer,
+  defaultState,
+  applyMiddleware(logger, thunk)
+);
 
-const store = createStore(rootReducer, defaultState, applyMiddleware(trunk));
+function fetchCources() {
+  console.log('1===============')
+  return fetch('http://localhost:3001/courses');
+}
+
+function fetchAuthers() {
+  console.log('2===============')
+  return fetch('http://localhost:3001/authors');
+}
+
+function addCourse(course) {
+  return {
+    type: 'ADD_COURSE',
+    course,
+  };
+}
+
+function AddAuthors(author) {
+  console.log(author)
+  console.log(author.length)
+  return {
+    type: 'ADD_AUTHOR',
+    author,
+  };
+}
+function addCourcesDispacter() {
+  return function (dispatch) {
+    return fetchCources().then(
+      course => dispatch(addCourse(course)),
+      error => console.log(error)
+    );
+  }
+}
+function addAuthorsDispacter() {
+  return function (dispatch) {
+    return fetchAuthers().then(
+      author => AddAuthors(author),
+      error => console.log(error)
+
+    );
+  };
+}
+
+store.dispatch(
+  addCourcesDispacter()
+);
+
+store.dispatch(
+  addAuthorsDispacter()
+);
+
+
+// store.dispatch(
+//   fetchCources()
+// ).then(() => {
+//   console.log('Cources');
+// });
+
+// store.dispatch(
+//   fetchAuthers()
+// ).then(() => {
+//   console.log('Authors');
+// });
 
 export default store;

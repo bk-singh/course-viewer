@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 
 import Courses from "./Courses";
+import Course from "./Course";
 
 function App() {
   return (
@@ -16,6 +17,8 @@ function App() {
         <Switch>
           <Route exact path="/" component={Home} />
           <Route path="/courses" component={Courses} />
+          <Route path="/course" component={Course} />
+          <Route path="/course/:slug" component={Course} />
           <Route path="/about" component={About} />
           <Route component={NoMatch} />
         </Switch>
@@ -36,8 +39,7 @@ function Home() {
   );
 }
 
-function About() {
-  return (
+function About() {  return (
     <div>
       <h2>About</h2>
       <p>

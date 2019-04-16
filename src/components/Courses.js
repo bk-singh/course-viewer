@@ -1,22 +1,17 @@
 import React from "react";
 import { connect } from "react-redux";
-
+import { Link } from "react-router-dom";
 class Courses extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      newCourse: "",
-      newId: 1
     };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
-
   renderCourse(course) {
     return (
-      <tr key={course.id}>
+      <tr key={course.title}>
         <td>
-          <button className="btn btn-light">Watch</button>
+          <Link to="/course/{course.id}" className="btn btn-light">Watch> {course.id}</Link>
         </td>
         <td>{course.title}</td>
         <td>{course.author}</td>
@@ -25,27 +20,18 @@ class Courses extends React.Component {
     );
   }
 
-  handleChange(event) {
-    this.setState({ newCourse: event.target.value });
-  }
-
-  handleSubmit(event) {
-    this.props.addCourse({ id: this.state.newId, title: this.state.newCourse });
-    this.setState({
-      newCourse: "",
-      newId: this.state.newId + 1
-    });
-    event.preventDefault();
-  }
   componentDidMount() {
     console.log(this.props.courses);
   }
+
   render() {
     const courses = this.props.courses;
     return (
       <div>
+        <Coursebutton/>
+        <hr/>
         <h2>Courses</h2>
-        <table className="table">
+        <table className="table border">
           <thead>
             <tr>
               <th />
@@ -60,33 +46,22 @@ class Courses extends React.Component {
             })}
           </tbody>
         </table>
-        <form onSubmit={this.handleSubmit}>
-          <input
-            type="text"
-            value={this.state.newCourse}
-            onChange={this.handleChange}
-          />
-          <input type="submit" value="Save" />
-        </form>
       </div>
     );
   }
 }
-
+function Coursebutton(){
+  return (
+    <div>
+      <Link to="/course" className='btn btn-primary'>Add Course</Link>
+    </div>
+  );
+}
 function mapStateToProps(state) {
-  console.log(state);
   return {
     courses: state.courses
   };
 }
-
-const mapDispatchToProps = dispatch => {
-  return {
-    addCourse: course => dispatch(Object.assign({ type: "ADD_COURSE" }, course))
-  };
-};
-
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
 )(Courses);

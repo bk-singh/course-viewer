@@ -4,6 +4,5 @@ function author(state = [], action) {
         return state;
     }
   }
-  
+
   export default author;
-  
