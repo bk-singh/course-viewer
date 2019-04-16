@@ -7,7 +7,7 @@ class Course extends React.Component {
     super(props);
     this.state = {
       newCourse: "",
-      selectedAuthorId: 1,
+      selectedAuthorId: 0,
       category: "",
       newId: 11
     };
@@ -41,7 +41,9 @@ class Course extends React.Component {
     });
     this.setState({
       newCourse: "",
-      newId: this.state.newId + 1
+      selectedAuthorId: 0,
+      category: "",
+      newId: this.state.newId + 1,
     });
     event.preventDefault();
   }
@@ -64,7 +66,8 @@ class Course extends React.Component {
             <label>Author</label>
             <select
               className="form-control"
-              onChange={this.handleAuthorChange}>
+              value="0"
+              onChange={this.handleAuthorChange}
               required
               >
               <option value="" disabled>Select Author</option>
