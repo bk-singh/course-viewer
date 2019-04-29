@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import { deleteCourse} from "./../actions/actionCreators";
 import { Link } from "react-router-dom";
 class Courses extends React.Component {
   constructor(props) {
@@ -7,15 +8,32 @@ class Courses extends React.Component {
     this.state = {
     };
   }
+  handleDelete(courseId){
+    console.log(courseId);
+    if(!courseId) {
+      alert("Error.");
+      return;
+    }
+    this.props.deleteCourse({
+        id: courseId,
+      });
+  }
   renderCourse(course) {
     return (
       <tr key={course.title}>
         <td>
-          <Link to="/course/{course.id}" className="btn btn-light">Watch> {course.id}</Link>
+          <Link to={"/course/"+ course.slug} className="btn btn-light">Watch> {course.id}</Link>
         </td>
         <td>{course.title}</td>
         <td>{course.author}</td>
         <td>{course.category}</td>
+        <td>
+          <Link
+            to={"/courses"}
+            className="btn btn-danger"
+            onClick={this.handleDelete.bind(this, course.id)}
+          >Delete</Link>
+          </td>
       </tr>
     );
   }
@@ -57,11 +75,19 @@ function Coursebutton(){
     </div>
   );
 }
+
 function mapStateToProps(state) {
   return {
     courses: state.courses
   };
 }
+
+const mapDispatchToProps = dispatch => {
+  return {
+    deleteCourse: course => dispatch(deleteCourse(course.id)),
+  };
+};
 export default connect(
   mapStateToProps,
+  mapDispatchToProps
 )(Courses);

@@ -66,14 +66,14 @@ const defaultState = {
       id: 9,
       title: "Becoming an Outlier: Reprogramming the Developer Mind",
       slug: "career-reboot-for-developer-mind",
-      authorId: 1,
+      authorId: 3,
       category: "Career"
     },
     {
       id: 10,
       title: "Web Component Fundamentals",
       slug: "web-components-shadow-dom",
-      authorId: 1,
+      authorId: 2,
       category: "HTML5"
     }
   ],

@@ -1,3 +1,4 @@
+
 import React from "react";
 import {
   BrowserRouter as Router,
@@ -17,8 +18,8 @@ function App() {
         <Switch>
           <Route exact path="/" component={Home} />
           <Route path="/courses" component={Courses} />
-          <Route path="/course" component={Course} />
-          <Route path="/course/:slug" component={Course} />
+          <Route path="/course/:slug" component={Course} exact/>
+          <Route path="/course" component={Course} exact />
           <Route path="/about" component={About} />
           <Route component={NoMatch} />
         </Switch>
@@ -30,7 +31,7 @@ function App() {
 function Home() {
   return (
     <div className="bg-light p-4">
-      <h2>Pluralsight Administration</h2>
+      <h2>Administration</h2>
       <p>React, Redux, React Router for ultra-responsive web apps.</p>
       <NavLink to="/About">
         <button className="btn btn-primary">Learn more</button>

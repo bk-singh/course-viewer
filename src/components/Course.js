@@ -1,15 +1,24 @@
 import React from "react";
 import { connect } from "react-redux";
-import { addCourse } from "./../actions/actionCreators";
+import { addCourse, editCourse } from "./../actions/actionCreators";
 import { bindActionCreators } from "redux";
 class Course extends React.Component {
   constructor(props) {
     super(props);
+    const slug = this.props.match.params.slug || '';
+    let course = {};
+    let isEdit = false;
+    if (slug) {
+      course = this.props.courses.filter(course => course.slug === slug);
+      course = course.length ? course[0] : {};
+      isEdit = true;
+    }
     this.state = {
-      newCourse: "",
-      selectedAuthorId: 0,
-      category: "",
-      newId: 11
+      isEdit: isEdit,
+      newCourse: course.title || "",
+      selectedAuthorId: course.authorId || 0,
+      category: course.category || "",
+      newId: course.id || 11
     };
     this.handleTitleChange = this.handleTitleChange.bind(this);
     this.handleAuthorChange = this.handleAuthorChange.bind(this);
@@ -32,13 +41,24 @@ class Course extends React.Component {
       alert("Please fill the form.");
       return;
     }
-    this.props.addCourse({
-      id: this.state.newId,
-      title: this.state.newCourse,
-      authorId: this.state.selectedAuthorId,
-      category: this.state.category,
-      slug: 'react-authentication-security'+ this.state.newId
-    });
+    if (this.state.isEdit) {
+      this.props.editCourse({
+        id: this.state.newId,
+        title: this.state.newCourse,
+        authorId: this.state.selectedAuthorId,
+        category: this.state.category,
+        slug: 'react-authentication-security'+ this.state.newId
+      });
+
+    } else {
+      this.props.addCourse({
+        id: this.state.newId,
+        title: this.state.newCourse,
+        authorId: this.state.selectedAuthorId,
+        category: this.state.category,
+        slug: 'react-authentication-security'+ this.state.newId
+      });
+    }
     this.setState({
       newCourse: "",
       selectedAuthorId: 0,
@@ -51,7 +71,7 @@ class Course extends React.Component {
   render() {
     return (
       <div>
-        <h2>Add Course</h2>
+        <h2>Add Cours</h2>
         <form onSubmit={this.handleSubmit}>
           <div className="form-group">
             <label>Title</label>
@@ -66,7 +86,7 @@ class Course extends React.Component {
             <label>Author</label>
             <select
               className="form-control"
-              value="0"
+              value={this.state.selectedAuthorId}
               onChange={this.handleAuthorChange}
               required
               >
@@ -94,13 +114,15 @@ class Course extends React.Component {
 function mapStateToProps(state) {
   console.log(state);
   return {
+    courses: state.courses,
     authors: state.authors
   };
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    addCourse: course => dispatch(addCourse(course.id, course.title, course.authorId, course.category, course.slug))
+    addCourse: course => dispatch(addCourse(course.id, course.title, course.authorId, course.category, course.slug)),
+    editCourse: course => dispatch(editCourse(course.id, course.title, course.authorId, course.category, course.slug)),
   };
 };
 
