@@ -2,9 +2,11 @@ import { createStore, applyMiddleware } from "redux";
 
 import rootReducer from './reducers/index';
 import logger from 'redux-logger';
-import thunk from 'redux-thunk';
+import createSagaMiddleware from 'redux-saga';
 
-const defaultState = {
+import rootSaga from './sagas/sagas'
+
+const defaultState1 = {
   courses: [
     {
       id: 1,
@@ -83,10 +85,14 @@ const defaultState = {
     { id: 3, name: "Dan Wahlin" }
   ]
 };
-
+const defaultState = {courses: [], authors: []};
+const sagaMiddleware = createSagaMiddleware()
 const store = createStore(
   rootReducer,
   defaultState,
-  applyMiddleware(logger, thunk)
+  applyMiddleware(logger, sagaMiddleware)
 );
+sagaMiddleware.run(rootSaga)
+
+const action = course => store.dispatch(course)
 export default store;

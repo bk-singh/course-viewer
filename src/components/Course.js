@@ -1,17 +1,26 @@
 import React from "react";
 import { connect } from "react-redux";
-import { addCourse, editCourse } from "./../actions/actionCreators";
+import { asyncAddCourse, editAsyncCourse, asyncGetAllCourses, asyncGetAllAuthors } from "./../actions/actionCreators";
+// import { watchUpdateAsync } from './../sagas/sagas'
 import { bindActionCreators } from "redux";
 class Course extends React.Component {
   constructor(props) {
     super(props);
     const slug = this.props.match.params.slug || '';
+    const id = this.props.match.params.id || '';
     let course = {};
     let isEdit = false;
     if (slug) {
       course = this.props.courses.filter(course => course.slug === slug);
       course = course.length ? course[0] : {};
       isEdit = true;
+    } else if (id) {
+      course = this.props.courses.filter(course => course.slug === id);
+      course = course.length ? course[0] : {};
+      isEdit = true;
+    } else {
+      this.props.asyncGetAllAuthors();
+      this.props.asyncGetAllCourses();
     }
     this.state = {
       isEdit: isEdit,
@@ -37,7 +46,7 @@ class Course extends React.Component {
   }
 
   handleSubmit(event) {
-    if(!(this.state.newId && this.state.newCourse && this.state.selectedAuthorId && this.state.category)) {
+    if (!(this.state.newId && this.state.newCourse && this.state.selectedAuthorId && this.state.category)) {
       alert("Please fill the form.");
       return;
     }
@@ -47,7 +56,7 @@ class Course extends React.Component {
         title: this.state.newCourse,
         authorId: this.state.selectedAuthorId,
         category: this.state.category,
-        slug: 'react-authentication-security'+ this.state.newId
+        slug: 'react-authentication-security' + this.state.newId
       });
 
     } else {
@@ -56,7 +65,7 @@ class Course extends React.Component {
         title: this.state.newCourse,
         authorId: this.state.selectedAuthorId,
         category: this.state.category,
-        slug: 'react-authentication-security'+ this.state.newId
+        slug: 'react-authentication-security' + this.state.newId
       });
     }
     this.setState({
@@ -89,7 +98,7 @@ class Course extends React.Component {
               value={this.state.selectedAuthorId}
               onChange={this.handleAuthorChange}
               required
-              >
+            >
               <option value="" disabled>Select Author</option>
               {this.props.authors.map((author) => <option value={author.id} key={author.id}>{author.name}</option>)}
             </select>
@@ -121,8 +130,10 @@ function mapStateToProps(state) {
 
 const mapDispatchToProps = dispatch => {
   return {
-    addCourse: course => dispatch(addCourse(course.id, course.title, course.authorId, course.category, course.slug)),
-    editCourse: course => dispatch(editCourse(course.id, course.title, course.authorId, course.category, course.slug)),
+    asyncGetAllCourses: () => dispatch(asyncGetAllCourses()),
+    asyncGetAllAuthors: () => dispatch(asyncGetAllAuthors()),
+    addCourse: course => dispatch(asyncAddCourse(course.id, course.title, course.authorId, course.category, course.slug)),
+    editCourse: course => dispatch(editAsyncCourse(course.id, course.title, course.authorId, course.category, course.slug)),
   };
 };
 

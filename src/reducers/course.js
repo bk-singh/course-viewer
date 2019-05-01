@@ -1,7 +1,20 @@
+import { RECEIVE_COURSES} from './../actions/actionCreators'
 function course(state = [], action) {
+  console.log('reducer: state::' , state)
+  console.log('reducer: action:: ' , action)
+  let newState = state;
   switch (action.type) {
+    case RECEIVE_COURSES:
+      newState = state;
+      newState = state || [];
+      console.log('course reduser: ', action)
+      if(!action.courses)
+        return state;
+      newState = action.courses;
+      return newState;
+
     case "ADD_COURSE":
-      let newState = state;
+      newState = state;
       newState = state || [];
       console.log('course reduser: ', action)
       if(!action.id)
@@ -17,6 +30,7 @@ function course(state = [], action) {
         }
       ]);
       return newState;
+
     case "EDIT_COURSE":
       let newEditState = state;
       newEditState = state || [];

@@ -1,20 +1,28 @@
 import React from "react";
 import { connect } from "react-redux";
-import { deleteCourse} from "./../actions/actionCreators";
+import { deleteCourse, asyncGetAllCourses, asyncGetAllAuthors, asyncDeleteCourse } from "./../actions/actionCreators";
 import { Link } from "react-router-dom";
 class Courses extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
     };
+    console.log('=======> ', this.props);
+    if(!this.props.authors.length) {
+      this.props.asyncGetAllAuthors();
+    }
+    if(!this.props.courses.length) {
+      this.props.asyncGetAllCourses();
+    }
   }
+
   handleDelete(courseId){
     console.log(courseId);
     if(!courseId) {
       alert("Error.");
       return;
     }
-    this.props.deleteCourse({
+    this.props.asyncDeleteCourse({
         id: courseId,
       });
   }
@@ -78,16 +86,20 @@ function Coursebutton(){
 
 function mapStateToProps(state) {
   return {
-    courses: state.courses
+    courses: state.courses,
+    authors: state.authors
   };
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    deleteCourse: course => dispatch(deleteCourse(course.id)),
+    asyncGetAllCourses: () => dispatch(asyncGetAllCourses()),
+    asyncGetAllAuthors: () => dispatch(asyncGetAllAuthors()),
+    asyncDeleteCourse: course => dispatch(asyncDeleteCourse(course.id)),
   };
 };
 export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(Courses);
+
