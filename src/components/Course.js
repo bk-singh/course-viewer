@@ -1,8 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
 import { asyncAddCourse, editAsyncCourse, asyncGetAllCourses, asyncGetAllAuthors } from "./../actions/actionCreators";
-// import { watchUpdateAsync } from './../sagas/sagas'
-import { bindActionCreators } from "redux";
 class Course extends React.Component {
   constructor(props) {
     super(props);
