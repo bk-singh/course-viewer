@@ -1,4 +1,10 @@
-import { RECEIVE_COURSES} from './../actions/actionCreators'
+import {
+  RECEIVE_COURSES,
+  DELETE_COURSE,
+  EDIT_COURSE,
+  ADD_COURSE,
+} from './../actions/actionCreators';
+
 function course(state = [], action) {
   let newState = state;
   switch (action.type) {
@@ -10,7 +16,7 @@ function course(state = [], action) {
       newState = action.courses;
       return newState;
 
-    case "ADD_COURSE":
+    case ADD_COURSE:
       newState = state;
       newState = state || [];
       if(!action.id)
@@ -27,31 +33,29 @@ function course(state = [], action) {
       ]);
       return newState;
 
-    case "EDIT_COURSE":
-      let newEditState = state;
-      newEditState = state || [];
+    case EDIT_COURSE:
+      newState = state || [];
       if(!action.id)
         return state;
-      let courseIndex = newEditState.findIndex((c) => c.id === action.id);
-      newEditState[courseIndex] =
+      let courseIndex = newState.findIndex((c) => c.id === action.id);
+      newState[courseIndex] =
         {
-          ...newEditState[courseIndex],
+          ...newState[courseIndex],
           id: action.id,
           title: action.title,
           slug: action.slug,
           authorId: action.authorId,
           category: action.category
         };
-      return newEditState;
+      return newState;
 
-      case "DELETE_COURSE":
-        let newDeleteState = state;
-        newDeleteState = state || [];
+      case DELETE_COURSE:
+        newState = state || [];
         if(!action.id)
           return state;
-        courseIndex = newDeleteState.findIndex((c) => c.id === action.id);
-        newDeleteState.splice(courseIndex, 1);
-        return newDeleteState;
+        courseIndex = newState.findIndex((c) => c.id === action.id);
+        newState.splice(courseIndex, 1);
+        return newState;
     default:
       return state;
   }

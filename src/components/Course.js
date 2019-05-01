@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+
 import { asyncAddCourse, editAsyncCourse, asyncGetAllCourses, asyncGetAllAuthors } from "./../actions/actionCreators";
 class Course extends React.Component {
   constructor(props) {
@@ -23,9 +24,9 @@ class Course extends React.Component {
     this.state = {
       isEdit: isEdit,
       newCourse: course.title || "",
-      selectedAuthorId: course.authorId || 0,
+      selectedAuthorId: course.authorId || 1,
       category: course.category || "",
-      newId: course.id || 11
+      newId: course.id || 0
     };
     this.handleTitleChange = this.handleTitleChange.bind(this);
     this.handleAuthorChange = this.handleAuthorChange.bind(this);
@@ -44,7 +45,7 @@ class Course extends React.Component {
   }
 
   handleSubmit(event) {
-    if (!(this.state.newId && this.state.newCourse && this.state.selectedAuthorId && this.state.category)) {
+    if (!(this.state.newCourse && this.state.category)) {
       alert("Please fill the form.");
       return;
     }
@@ -59,7 +60,7 @@ class Course extends React.Component {
 
     } else {
       this.props.addCourse({
-        id: this.state.newId,
+        id: undefined,
         title: this.state.newCourse,
         authorId: this.state.selectedAuthorId,
         category: this.state.category,
@@ -70,7 +71,7 @@ class Course extends React.Component {
       newCourse: "",
       selectedAuthorId: 0,
       category: "",
-      newId: this.state.newId + 1,
+      newId: this.state.newId,
     });
     event.preventDefault();
   }
@@ -78,7 +79,7 @@ class Course extends React.Component {
   render() {
     return (
       <div>
-        <h2>Add Cours</h2>
+        <h2>Add Course</h2>
         <form onSubmit={this.handleSubmit}>
           <div className="form-group">
             <label>Title</label>
@@ -119,7 +120,6 @@ class Course extends React.Component {
 }
 
 function mapStateToProps(state) {
-  console.log(state);
   return {
     courses: state.courses,
     authors: state.authors

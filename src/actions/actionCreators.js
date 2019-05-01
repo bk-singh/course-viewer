@@ -58,7 +58,6 @@ export function asyncAddCourse(id, title, authorId, category, slug) {
 }
 
 export function editCourse(id, title, authorId, category, slug) {
-  console.log('action ---> ', id, title, authorId, category, slug)
   return {
     type: EDIT_COURSE,
     id,

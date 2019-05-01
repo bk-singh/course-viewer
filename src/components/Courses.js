@@ -16,7 +16,6 @@ class Courses extends React.Component {
   }
 
   handleDelete(courseId){
-    console.log(courseId);
     if(!courseId) {
       alert("Error.");
       return;
@@ -43,10 +42,6 @@ class Courses extends React.Component {
           </td>
       </tr>
     );
-  }
-
-  componentDidMount() {
-    console.log(this.props.courses);
   }
 
   render() {

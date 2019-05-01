@@ -2,7 +2,6 @@ import { handleResponse, handleError } from "./apiUtils";
 const baseUrl = "http://localhost:3001/courses/";
 
 export function getCourses() {
-  console.log('call ', baseUrl);
   return fetch(baseUrl)
     .then(handleResponse)
     .catch(handleError);
